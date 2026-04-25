@@ -1,5 +1,7 @@
 # 🤖 BrightPeak Chat Widget
 
+![Demo](./screenshots/demo.webp)
+
 A white-label AI chat widget that you can embed on any website with ONE line of code. Each client gets their own AI assistant trained on THEIR business information.
 
 ## ✨ Features
@@ -20,7 +22,7 @@ Add this ONE line to your website before the `</body>` tag:
 
 ```html
 <script
-  src="https://your-domain.com/widget.js"
+  src="https://chatbot-embed-sdk.itsniloy.eu.org/widget.js"
   data-bot-id="YOUR_CLIENT_ID"
   data-color="#YOUR_COLOR"
 ></script>
@@ -45,7 +47,11 @@ node server.js
 http://localhost:3341/admin
 ```
 
+![List of Clients](./screenshots/listofClients.webp)
+
 3. **Add a client**
+
+![Add New Client](./screenshots/addNewClient.webp)
 
 - Fill in business information (hours, prices, services)
 - Choose a brand color
@@ -246,7 +252,7 @@ Nginx config:
 ```nginx
 server {
     listen 80;
-    server_name your-domain.com;
+    server_name chatbot-embed-sdk.itsniloy.eu.org;
 
     location / {
         proxy_pass http://localhost:3341;
@@ -358,20 +364,3 @@ node test-gemini.js
 ## 📝 License
 
 MIT License - Free for commercial and personal use
-
-## 🎯 Roadmap
-
-- [ ] User authentication for admin panel
-- [ ] Chat history storage
-- [ ] Analytics dashboard
-- [ ] Multiple AI providers (OpenAI, Anthropic)
-- [ ] File upload support
-- [ ] Multi-language support
-
-## 🙏 Acknowledgments
-
-- Google Gemini AI
-- Express.js community
-- All contributors
-
-**Built with ❤️ for small business owners**
