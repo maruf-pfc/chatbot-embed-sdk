@@ -1,0 +1,27 @@
+# Dependencies
+node_modules/
+bun.lock
+package-lock.json
+
+# Environment
+.env
+.env.local
+
+# Database (keep structure but not data? - optional)
+# database/*.json
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Temporary files
+*.tmp
+*.temp
