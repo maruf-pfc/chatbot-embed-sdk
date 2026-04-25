@@ -1,0 +1,29 @@
+version: "3.8"
+
+services:
+  chat-widget:
+    build: .
+    container_name: brightpeak-chat-widget
+    restart: unless-stopped
+    ports:
+      - "3341:3341"
+    environment:
+      - NODE_ENV=production
+      - PORT=3341
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+    volumes:
+      - ./database:/app/database
+      - ./admin:/app/admin
+      - ./public:/app/public
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "require('http').get('http://localhost:3341/admin', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})",
+        ]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 10s

@@ -1,0 +1,549 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Iron Fit Gym | 24/7 Premium Fitness Center</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          "Helvetica Neue", sans-serif;
+        color: #1f2937;
+        line-height: 1.6;
+      }
+
+      /* Navigation */
+      .navbar {
+        background: white;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        position: fixed;
+        width: 100%;
+        top: 0;
+        z-index: 1000;
+      }
+      .nav-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 1rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .logo {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #0891b2;
+      }
+      .logo span {
+        color: #f59e0b;
+      }
+      .nav-links a {
+        margin-left: 2rem;
+        text-decoration: none;
+        color: #4b5563;
+        transition: color 0.3s;
+      }
+      .nav-links a:hover {
+        color: #0891b2;
+      }
+
+      /* Hero Section */
+      .hero {
+        background:
+          linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+          url("https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=1920&q=80");
+        background-size: cover;
+        background-position: center;
+        height: 90vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: white;
+        margin-top: 60px;
+      }
+      .hero-content h1 {
+        font-size: 3.5rem;
+        margin-bottom: 1rem;
+        animation: fadeInUp 1s ease;
+      }
+      .hero-content p {
+        font-size: 1.2rem;
+        margin-bottom: 2rem;
+        animation: fadeInUp 1s ease 0.2s backwards;
+      }
+      .btn {
+        display: inline-block;
+        padding: 14px 35px;
+        background: #0891b2;
+        color: white;
+        text-decoration: none;
+        border-radius: 50px;
+        font-weight: 600;
+        transition: all 0.3s;
+        animation: fadeInUp 1s ease 0.4s backwards;
+      }
+      .btn:hover {
+        background: #0e7490;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      }
+      .btn-outline {
+        background: transparent;
+        border: 2px solid white;
+        margin-left: 1rem;
+      }
+      .btn-outline:hover {
+        background: white;
+        color: #0891b2;
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Sections */
+      .section {
+        padding: 5rem 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      .section-title {
+        text-align: center;
+        font-size: 2.5rem;
+        margin-bottom: 3rem;
+        color: #1f2937;
+      }
+      .section-title span {
+        color: #0891b2;
+      }
+
+      /* Features Grid */
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+      }
+      .feature-card {
+        text-align: center;
+        padding: 2rem;
+        background: #f9fafb;
+        border-radius: 12px;
+        transition: transform 0.3s;
+      }
+      .feature-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      }
+      .feature-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+      }
+      .feature-card h3 {
+        margin-bottom: 1rem;
+        color: #0891b2;
+      }
+
+      /* Pricing */
+      .pricing-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 2rem;
+        margin-top: 2rem;
+      }
+      .pricing-card {
+        background: white;
+        border-radius: 12px;
+        padding: 2rem;
+        text-align: center;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s;
+        border: 1px solid #e5e7eb;
+      }
+      .pricing-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+      }
+      .pricing-card.popular {
+        border: 2px solid #0891b2;
+        position: relative;
+      }
+      .popular-badge {
+        position: absolute;
+        top: -12px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #0891b2;
+        color: white;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+      }
+      .price {
+        font-size: 3rem;
+        font-weight: bold;
+        color: #0891b2;
+        margin: 1rem 0;
+      }
+      .price small {
+        font-size: 1rem;
+        color: #6b7280;
+      }
+      .pricing-card ul {
+        list-style: none;
+        margin: 1.5rem 0;
+      }
+      .pricing-card li {
+        padding: 8px 0;
+        border-bottom: 1px solid #f0f0f0;
+      }
+
+      /* Class Schedule */
+      .schedule-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin-top: 2rem;
+      }
+      .class-card {
+        background: #f9fafb;
+        padding: 1.5rem;
+        border-radius: 8px;
+        text-align: center;
+        transition: all 0.3s;
+      }
+      .class-card:hover {
+        background: #0891b2;
+        color: white;
+        transform: scale(1.05);
+      }
+      .class-time {
+        font-weight: bold;
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+      }
+
+      /* CTA Section */
+      .cta-section {
+        background: linear-gradient(135deg, #0891b2 0%, #06b6d4 100%);
+        color: white;
+        text-align: center;
+        padding: 4rem 2rem;
+        border-radius: 20px;
+        margin: 3rem auto;
+      }
+      .cta-section h2 {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+      }
+      .cta-section .btn-white {
+        background: white;
+        color: #0891b2;
+        margin-top: 1rem;
+      }
+
+      /* Footer */
+      .footer {
+        background: #1f2937;
+        color: white;
+        text-align: center;
+        padding: 3rem;
+        margin-top: 3rem;
+      }
+      .footer-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+        text-align: left;
+      }
+      .footer-section h4 {
+        margin-bottom: 1rem;
+        color: #0891b2;
+      }
+      .footer-section p {
+        color: #9ca3af;
+        line-height: 1.8;
+      }
+      .copyright {
+        text-align: center;
+        padding-top: 2rem;
+        margin-top: 2rem;
+        border-top: 1px solid #374151;
+        color: #9ca3af;
+      }
+
+      /* Mobile Menu */
+      .mobile-menu-btn {
+        display: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+      }
+
+      @media (max-width: 768px) {
+        .nav-links {
+          display: none;
+        }
+        .mobile-menu-btn {
+          display: block;
+        }
+        .hero-content h1 {
+          font-size: 2rem;
+        }
+        .section-title {
+          font-size: 1.8rem;
+        }
+        .btn-outline {
+          margin-left: 0;
+          margin-top: 1rem;
+          display: block;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <div class="nav-container">
+        <div class="logo">IRON FIT <span>GYM</span></div>
+        <div class="mobile-menu-btn">☰</div>
+        <div class="nav-links">
+          <a href="#home">Home</a>
+          <a href="#features">Features</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#schedule">Classes</a>
+          <a href="#contact">Contact</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+      <div class="hero-content">
+        <h1>Transform Your Body<br />Transform Your Life</h1>
+        <p>24/7 Access • Premium Equipment • Expert Trainers</p>
+        <a href="#pricing" class="btn">Join Now</a>
+        <a href="#schedule" class="btn btn-outline">View Classes</a>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="section">
+      <h2 class="section-title">Why Choose <span>Iron Fit</span>?</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🕐</div>
+          <h3>24/7 Access</h3>
+          <p>Open 365 days a year. Train anytime that fits your schedule.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🏋️</div>
+          <h3>Premium Equipment</h3>
+          <p>State-of-the-art machines and free weights from top brands.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🧘</div>
+          <h3>Group Classes</h3>
+          <p>Yoga, Spin, HIIT, Zumba - something for everyone.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔥</div>
+          <h3>Sauna & Steam</h3>
+          <p>Relax and recover in our premium sauna facilities.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">💪</div>
+          <h3>Personal Training</h3>
+          <p>Expert trainers to help you reach your goals faster.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🚿</div>
+          <h3>Towel Service</h3>
+          <p>Fresh towels provided for premium members.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="section">
+      <h2 class="section-title">Membership <span>Plans</span></h2>
+      <div class="pricing-grid">
+        <div class="pricing-card">
+          <h3>Day Pass</h3>
+          <div class="price">$15</div>
+          <ul>
+            <li>✓ Full gym access</li>
+            <li>✓ Locker room access</li>
+            <li>✓ Free WiFi</li>
+            <li>✗ Group classes</li>
+            <li>✗ Towel service</li>
+            <li>✗ Guest passes</li>
+          </ul>
+          <a href="#" class="btn">Get Day Pass</a>
+        </div>
+
+        <div class="pricing-card popular">
+          <div class="popular-badge">MOST POPULAR</div>
+          <h3>Premium</h3>
+          <div class="price">$79 <small>/month</small></div>
+          <ul>
+            <li>✓ 24/7 gym access</li>
+            <li>✓ All group classes</li>
+            <li>✓ 2 guest passes/month</li>
+            <li>✓ Towel service</li>
+            <li>✓ Sauna & steam room</li>
+            <li>✓ 10% off smoothies</li>
+          </ul>
+          <a href="#" class="btn">Join Premium</a>
+        </div>
+
+        <div class="pricing-card">
+          <h3>Basic</h3>
+          <div class="price">$49 <small>/month</small></div>
+          <ul>
+            <li>✓ 24/7 gym access</li>
+            <li>✗ Group classes</li>
+            <li>✗ Guest passes</li>
+            <li>✗ Towel service</li>
+            <li>✗ Sauna access</li>
+            <li>✗ Smoothie discount</li>
+          </ul>
+          <a href="#" class="btn">Join Basic</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Class Schedule -->
+    <section id="schedule" class="section">
+      <h2 class="section-title">Weekly <span>Class Schedule</span></h2>
+      <div class="schedule-grid">
+        <div class="class-card">
+          <div class="class-time">Yoga</div>
+          <div>Mon & Wed</div>
+          <div>6:00 PM</div>
+        </div>
+        <div class="class-card">
+          <div class="class-time">Spin</div>
+          <div>Tue & Thu</div>
+          <div>7:00 AM</div>
+        </div>
+        <div class="class-card">
+          <div class="class-time">HIIT</div>
+          <div>Friday</div>
+          <div>5:00 PM</div>
+        </div>
+        <div class="class-card">
+          <div class="class-time">Zumba</div>
+          <div>Saturday</div>
+          <div>10:00 AM</div>
+        </div>
+        <div class="class-card">
+          <div class="class-time">Pilates</div>
+          <div>Mon & Wed</div>
+          <div>8:00 AM</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <div class="cta-section">
+      <h2>Ready to Start Your Journey?</h2>
+      <p>Join Iron Fit Gym today and get first week free!</p>
+      <a href="#" class="btn btn-white">Claim Your Free Week →</a>
+    </div>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section">
+      <h2 class="section-title">Visit <span>Us</span></h2>
+      <div
+        style="
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+          gap: 2rem;
+        "
+      >
+        <div>
+          <h3>📍 Location</h3>
+          <p>789 Fitness Blvd, 2nd Floor<br />Downtown, CA 90210</p>
+        </div>
+        <div>
+          <h3>📞 Contact</h3>
+          <p>Phone: (555) 234-5678<br />Email: info@ironfit.com</p>
+        </div>
+        <div>
+          <h3>⏰ Hours</h3>
+          <p>Open 24/7<br />365 days a year!</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h4>Iron Fit Gym</h4>
+          <p>
+            Premium fitness center open 24/7. Your journey to a better you
+            starts here.
+          </p>
+        </div>
+        <div class="footer-section">
+          <h4>Quick Links</h4>
+          <p>
+            <a href="#home" style="color: #9ca3af; text-decoration: none"
+              >Home</a
+            ><br />
+            <a href="#pricing" style="color: #9ca3af; text-decoration: none"
+              >Membership</a
+            ><br />
+            <a href="#schedule" style="color: #9ca3af; text-decoration: none"
+              >Classes</a
+            >
+          </p>
+        </div>
+        <div class="footer-section">
+          <h4>Follow Us</h4>
+          <p>📸 Instagram<br />👍 Facebook<br />🐦 Twitter</p>
+        </div>
+      </div>
+      <div class="copyright">
+        <p>&copy; 2024 Iron Fit Gym. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <!-- 
+      ===========================================
+      CHAT WIDGET INTEGRATION - ONE LINE OF CODE
+      ===========================================
+      Just add this script tag to any website!
+      The widget will automatically appear.
+    -->
+    <script
+      src="/widget.js"
+      data-bot-id="iron-fit-gym"
+      data-color="#0891B2"
+    ></script>
+    <!-- 
+      That's it! The chat widget will handle everything:
+      - Answering questions about hours, pricing, classes
+      - Providing membership info
+      - Directing visitors to contact channels
+    -->
+  </body>
+</html>
