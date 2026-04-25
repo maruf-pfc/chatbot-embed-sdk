@@ -1,0 +1,12 @@
+{
+  "clients": {
+    "demo-coffee-shop": {
+      "id": "demo-coffee-shop",
+      "business_name": "Bean & Brew Coffeehouse",
+      "business_info": "Open 7am to 7pm daily.\nMenu: Espresso $3, Latte $4.50, Cold brew $4.\nPastries: Croissant $3, Muffin $2.50.\nFree WiFi. Catering available for 10+ people.\nReturns accepted within 14 days with receipt.",
+      "fallback_message": "I don't have that info — please call us at (555) 727-2834 or ask a barista in-store.",
+      "bubble_color": "#6F4E37",
+      "created_at": "2026-04-25T10:52:56.584Z"
+    }
+  }
+}

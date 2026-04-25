@@ -1,0 +1,297 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Chat Widget Admin</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        background: #f4f4f4;
+        padding: 20px;
+      }
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      .card {
+        background: white;
+        padding: 25px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+      h1 {
+        margin-bottom: 20px;
+        color: #333;
+      }
+      h2 {
+        margin-bottom: 15px;
+        color: #555;
+        font-size: 18px;
+      }
+      input,
+      textarea {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-size: 14px;
+      }
+      textarea {
+        min-height: 150px;
+        font-family: monospace;
+      }
+      button {
+        background: #3b82f6;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 500;
+      }
+      button:hover {
+        background: #2563eb;
+      }
+      .client-list {
+        display: grid;
+        gap: 15px;
+      }
+      .client-item {
+        background: #f9f9f9;
+        padding: 15px;
+        border-radius: 8px;
+        border-left: 4px solid;
+        margin-bottom: 10px;
+      }
+      .embed-code {
+        background: #e8e8e8;
+        padding: 10px;
+        border-radius: 5px;
+        font-family: monospace;
+        font-size: 12px;
+        margin-top: 10px;
+        word-break: break-all;
+      }
+      .delete-btn {
+        background: #ef4444;
+        margin-top: 10px;
+        margin-right: 10px;
+      }
+      .delete-btn:hover {
+        background: #dc2626;
+      }
+      .test-btn {
+        background: #10b981;
+      }
+      .test-btn:hover {
+        background: #059669;
+      }
+      .color-preview {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        border-radius: 5px;
+        margin-left: 10px;
+        vertical-align: middle;
+      }
+      .success {
+        background: #d1fae5;
+        color: #065f46;
+        padding: 10px;
+        border-radius: 6px;
+        margin-top: 10px;
+        display: none;
+      }
+      .error {
+        background: #fee2e2;
+        color: #991b1b;
+        padding: 10px;
+        border-radius: 6px;
+        margin-top: 10px;
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>🤖 Chat Widget Admin Panel</h1>
+
+      <div class="card">
+        <h2>➕ Add New Client</h2>
+        <input
+          type="text"
+          id="clientId"
+          placeholder="Client ID (e.g., coffee-shop-1, pizza-place)"
+          required
+        />
+        <input
+          type="text"
+          id="businessName"
+          placeholder="Business Name"
+          required
+        />
+        <textarea
+          id="businessInfo"
+          placeholder="Business Information (hours, services, pricing, FAQs, policies...)"
+          required
+        ></textarea>
+        <input
+          type="text"
+          id="fallbackMessage"
+          placeholder="Fallback Message (when bot doesn't know)"
+          value="I don't have that information — please contact the business directly."
+          required
+        />
+        <label>Chat Bubble Color:</label>
+        <input
+          type="color"
+          id="bubbleColor"
+          value="#3B82F6"
+          style="width: 80px; margin-top: 5px"
+        />
+        <button onclick="saveClient()">💾 Save Client</button>
+        <div id="saveSuccess" class="success">
+          ✅ Client saved successfully!
+        </div>
+        <div id="saveError" class="error">❌ Error saving client</div>
+      </div>
+
+      <div class="card">
+        <h2>📋 Your Clients</h2>
+        <div id="clientList">Loading clients...</div>
+      </div>
+    </div>
+
+    <script>
+      const API_URL = "";
+
+      async function loadClients() {
+        try {
+          const response = await fetch("/api/admin/clients");
+          const clients = await response.json();
+
+          const container = document.getElementById("clientList");
+          if (clients.length === 0) {
+            container.innerHTML =
+              "<p>✨ No clients yet. Create your first client above!</p>";
+            return;
+          }
+
+          container.innerHTML = clients
+            .map(
+              (client) => `
+                    <div class="client-item" style="border-left-color: ${client.bubble_color}">
+                        <strong>🏢 ${client.business_name}</strong><br>
+                        <small>ID: ${client.id}</small><br>
+                        <small>Created: ${new Date(client.created_at).toLocaleString()}</small>
+                        <div class="embed-code">
+                            📋 Embed this code on your website:<br>
+                            <code style="background: #333; color: #0f0; padding: 8px; display: block; margin-top: 8px;">
+                                &lt;script src="${window.location.origin}/widget.js" data-bot-id="${client.id}" data-color="${client.bubble_color}"&gt;&lt;/script&gt;
+                            </code>
+                        </div>
+                        <button class="delete-btn" onclick="deleteClient('${client.id}')">🗑️ Delete</button>
+                        <button class="test-btn" onclick="testClient('${client.id}')">🧪 Test Chat</button>
+                    </div>
+                `,
+            )
+            .join("");
+        } catch (error) {
+          document.getElementById("clientList").innerHTML =
+            '<p class="error">Error loading clients. Make sure server is running.</p>';
+        }
+      }
+
+      async function saveClient() {
+        const client = {
+          id: document.getElementById("clientId").value.trim(),
+          business_name: document.getElementById("businessName").value.trim(),
+          business_info: document.getElementById("businessInfo").value.trim(),
+          fallback_message: document
+            .getElementById("fallbackMessage")
+            .value.trim(),
+          bubble_color: document.getElementById("bubbleColor").value,
+        };
+
+        if (!client.id || !client.business_name || !client.business_info) {
+          alert("Please fill in Client ID, Business Name, and Business Info");
+          return;
+        }
+
+        // Check for spaces in ID
+        if (client.id.includes(" ")) {
+          alert(
+            "Client ID cannot contain spaces. Use hyphens instead (e.g., coffee-shop-1)",
+          );
+          return;
+        }
+
+        try {
+          const response = await fetch("/api/admin/clients", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(client),
+          });
+
+          if (response.ok) {
+            document.getElementById("saveSuccess").style.display = "block";
+            setTimeout(() => {
+              document.getElementById("saveSuccess").style.display = "none";
+            }, 3000);
+
+            loadClients();
+
+            // Clear form
+            document.getElementById("clientId").value = "";
+            document.getElementById("businessName").value = "";
+            document.getElementById("businessInfo").value = "";
+            document.getElementById("fallbackMessage").value =
+              "I don't have that information — please contact the business directly.";
+          } else {
+            throw new Error("Save failed");
+          }
+        } catch (error) {
+          document.getElementById("saveError").style.display = "block";
+          setTimeout(() => {
+            document.getElementById("saveError").style.display = "none";
+          }, 3000);
+        }
+      }
+
+      async function deleteClient(id) {
+        if (!confirm(`Delete this client? This action cannot be undone.`))
+          return;
+
+        try {
+          const response = await fetch(`/api/admin/clients/${id}`, {
+            method: "DELETE",
+          });
+
+          if (response.ok) {
+            loadClients();
+          }
+        } catch (error) {
+          alert("Error deleting client");
+        }
+      }
+
+      function testClient(id) {
+        window.open(`/test.html?botId=${id}`, "_blank", "width=500,height=600");
+      }
+
+      // Load clients on page load
+      loadClients();
+
+      // Auto-refresh every 10 seconds
+      setInterval(loadClients, 10000);
+    </script>
+  </body>
+</html>
