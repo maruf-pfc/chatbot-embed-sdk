@@ -162,6 +162,16 @@
       #chat-send:hover {
         opacity: 0.9;
       }
+      /* Powered by AI text */
+      #chat-footer {
+        text-align: center;
+        padding: 8px;
+        font-size: 10px;
+        color: #9ca3af;
+        background: white;
+        border-top: 1px solid #f0f0f0;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      }
       /* Mobile fix - prevent keyboard from covering input */
       @media (max-width: 768px) {
         #chat-widget-window {
@@ -193,6 +203,9 @@
         <input type="text" id="chat-input" placeholder="Type your question...">
         <button id="chat-send">Send</button>
       </div>
+      <div id="chat-footer">
+        Powered by AI
+      </div>
     </div>
   `;
 
@@ -208,7 +221,7 @@
 
   let isWaitingForResponse = false;
 
-  // ✅ FIX: Chat window starts CLOSED by default
+  // Chat window starts CLOSED by default
   chatWindow.style.display = "none";
 
   // Toggle chat window
@@ -241,7 +254,7 @@
     input.disabled = true;
     isWaitingForResponse = true;
 
-    // ✅ FIX: Blur input to dismiss keyboard on mobile
+    // Blur input to dismiss keyboard on mobile
     input.blur();
 
     // Show typing indicator
