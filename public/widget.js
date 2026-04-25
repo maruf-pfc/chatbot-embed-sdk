@@ -162,6 +162,21 @@
       #chat-send:hover {
         opacity: 0.9;
       }
+      /* Mobile fix - prevent keyboard from covering input */
+      @media (max-width: 768px) {
+        #chat-widget-window {
+          position: fixed;
+          bottom: 0;
+          right: 0;
+          width: 100%;
+          height: 80vh;
+          border-radius: 12px 12px 0 0;
+        }
+        #chat-widget-button {
+          bottom: 20px;
+          right: 20px;
+        }
+      }
     </style>
     <div id="chat-widget-button">
       <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -193,6 +208,9 @@
 
   let isWaitingForResponse = false;
 
+  // ✅ FIX: Chat window starts CLOSED by default
+  chatWindow.style.display = "none";
+
   // Toggle chat window
   button.onclick = () => {
     if (chatWindow.style.display === "flex") {
@@ -202,6 +220,10 @@
       if (messagesDiv.children.length === 0) {
         addBotMessage("👋 Hello! How can I help you today?");
       }
+      // Focus input after window opens
+      setTimeout(() => {
+        input.focus();
+      }, 300);
     }
   };
 
@@ -218,6 +240,9 @@
     input.value = "";
     input.disabled = true;
     isWaitingForResponse = true;
+
+    // ✅ FIX: Blur input to dismiss keyboard on mobile
+    input.blur();
 
     // Show typing indicator
     const typingId = showTypingIndicator();
@@ -250,7 +275,10 @@
     } finally {
       input.disabled = false;
       isWaitingForResponse = false;
-      input.focus();
+      // Scroll to bottom after response
+      setTimeout(() => {
+        scrollToBottom();
+      }, 100);
     }
   }
 
@@ -296,12 +324,4 @@
       sendMessage();
     }
   };
-
-  // Auto-focus input when window opens
-  const observer = new MutationObserver(() => {
-    if (chatWindow.style.display === "flex") {
-      input.focus();
-    }
-  });
-  observer.observe(chatWindow, { attributes: true });
 })();

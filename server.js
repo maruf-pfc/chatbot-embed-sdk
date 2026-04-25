@@ -7,7 +7,9 @@ app.listen(PORT, () => {
   console.log("✅ Chat Widget Server Running");
   console.log("======================================");
   console.log(`📊 Admin Panel: http://localhost:${PORT}/admin`);
-  console.log(`🧪 Test Page: http://localhost:${PORT}/test.html`);
+  console.log(`🔐 Login: brightpeak / demo2024`);
+  console.log(`🧪 Test Page: http://localhost:${PORT}/coffee-shop.html`);
+  console.log(`💪 Gym Demo: http://localhost:${PORT}/gym-website.html`);
   console.log(`💡 Demo Client ID: demo-coffee-shop`);
   console.log("======================================\n");
 });

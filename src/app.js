@@ -1,12 +1,13 @@
 const express = require("express");
 const cors = require("cors");
-const path = require("path");
 const fs = require("fs");
+const path = require("path");
 require("dotenv").config();
 
 const chatRoutes = require("./routes/chatRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const { errorHandler, notFound } = require("./middleware/errorHandler");
+const { adminAuth } = require("./middleware/auth");
 
 const app = express();
 
@@ -15,41 +16,37 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "../public")));
 
-// Heath Check
-app.get("/health", (req, res) => {
-  res.status(200).json({ status: "OK" });
-});
-
-// Routes
+// Public routes (no auth)
 app.use("/api", chatRoutes);
-app.use("/api/admin", adminRoutes);
 
-// Admin paths
+// Admin API routes (protected)
+app.use("/api/admin", adminAuth, adminRoutes);
+
+// Serve admin HTML files (protected)
 const adminPath = path.join(__dirname, "../admin");
-const publicPath = path.join(__dirname, "../public");
 
-app.use("/admin", express.static(adminPath));
-
-app.get("/admin", (req, res) => {
+app.get("/admin", adminAuth, (req, res) => {
   res.sendFile(path.join(adminPath, "index.html"));
 });
 
-app.get("/admin/:page", (req, res) => {
+app.get("/admin/:page", adminAuth, (req, res) => {
   const page = req.params.page;
   const filePath = path.join(adminPath, page);
 
-  console.log(`Looking for: ${filePath}`); // Debug log
-
-  // Check if file exists and is an HTML file
   if (fs.existsSync(filePath) && page.endsWith(".html")) {
     res.sendFile(filePath);
   } else {
     res.status(404).json({ error: `Page ${page} not found` });
   }
 });
-// Serve test page
-app.get("/test.html", (req, res) => {
-  res.sendFile(path.join(publicPath, "test.html"));
+
+// Public test pages (no auth)
+app.get("/coffee-shop.html", (req, res) => {
+  res.sendFile(path.join(__dirname, "../public", "coffee-shop.html"));
+});
+
+app.get("/gym-website.html", (req, res) => {
+  res.sendFile(path.join(__dirname, "../public", "gym-website.html"));
 });
 
 // Error handling
