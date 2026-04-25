@@ -3,7 +3,7 @@ node_modules
 .gitignore
 *.md
 .env.example
-bun.lock
+
 .DS_Store
 *.log
 database/*.json

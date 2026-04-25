@@ -44,7 +44,7 @@ node server.js
 2. **Open Admin Panel**
 
 ```txt
-http://localhost:3341/admin
+https://chatbot-embed-sdk.itsniloy.eu.org/admin
 ```
 
 ![List of Clients](./screenshots/listofClients.webp)
@@ -116,7 +116,7 @@ chatbot-embed-sdk/
 ### Environment Variables (.env)
 
 ```env
-GEMINI_API_KEY=your_gemini_api_key_here
+OPENAI_API_KEY=sk-xxxxxx
 PORT=3341
 ```
 
@@ -165,12 +165,12 @@ pm2 startup
 
 ```bash
 # Chat with widget
-curl -X POST http://localhost:3341/api/chat \
+curl -X POST https://chatbot-embed-sdk.itsniloy.eu.org/api/chat \
   -H "Content-Type: application/json" \
   -d '{"botId":"demo-coffee-shop","message":"What are your hours?"}'
 
 # Create client
-curl -X POST http://localhost:3341/api/admin/clients \
+curl -X POST https://chatbot-embed-sdk.itsniloy.eu.org/api/admin/clients \
   -H "Content-Type: application/json" \
   -d '{
     "id": "my-business",
@@ -311,13 +311,13 @@ node test-gemini.js
 ### Test Widget Locally
 
 1. Start server: `node server.js`
-2. Open `http://localhost:3341/test.html`
+2. Open `https://chatbot-embed-sdk.itsniloy.eu.org/test.html`
 3. Click chat bubble
 4. Ask questions
 
 ### Test Different Clients
 
-- Coffee Shop: `http://localhost:3341/gym-website.html` (using gym client)
+- Coffee Shop: `https://chatbot-embed-sdk.itsniloy.eu.org/gym-website.html` (using gym client)
 - Or create custom test pages with different client IDs
 
 ## 🔒 Security Considerations
