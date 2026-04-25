@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Settings - BrightPeak Admin</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        background: #f3f4f6;
+        color: #1f2937;
+      }
+
+      .sidebar {
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 260px;
+        background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+        color: white;
+        padding: 24px 0;
+      }
+      .sidebar-header {
+        padding: 0 24px 24px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        margin-bottom: 24px;
+      }
+      .sidebar-header h2 {
+        font-size: 1.2rem;
+        font-weight: 600;
+      }
+      .nav-item {
+        padding: 12px 24px;
+        margin: 4px 12px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s;
+        color: #cbd5e1;
+        text-decoration: none;
+        display: block;
+      }
+      .nav-item:hover,
+      .nav-item.active {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+      }
+
+      .main-content {
+        margin-left: 260px;
+        padding: 32px;
+      }
+
+      .page-header {
+        margin-bottom: 32px;
+      }
+      .page-header h1 {
+        font-size: 1.8rem;
+        color: #1e293b;
+      }
+
+      .settings-card {
+        background: white;
+        border-radius: 12px;
+        padding: 32px;
+        margin-bottom: 24px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      }
+      .settings-card h2 {
+        margin-bottom: 20px;
+        color: #1e293b;
+      }
+      .setting-group {
+        margin-bottom: 24px;
+      }
+      .setting-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+        color: #374151;
+      }
+      .setting-group input,
+      .setting-group select {
+        width: 100%;
+        max-width: 400px;
+        padding: 10px;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        font-size: 14px;
+      }
+      .setting-group textarea {
+        width: 100%;
+        max-width: 600px;
+        padding: 10px;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        font-size: 14px;
+        font-family: monospace;
+      }
+      .btn {
+        padding: 10px 24px;
+        background: #6f4e37;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+      }
+      .btn:hover {
+        background: #5a3d2b;
+      }
+      .color-preview {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        border-radius: 6px;
+        margin-left: 10px;
+        vertical-align: middle;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <h2>🎯 BrightPeak</h2>
+        <p>Chat Widget Admin</p>
+      </div>
+      <a href="/admin" class="nav-item">📊 Dashboard</a>
+      <a href="/admin/clients.html" class="nav-item">👥 Clients</a>
+      <a href="/admin/settings.html" class="nav-item active">⚙️ Settings</a>
+      <a href="/admin/analytics.html" class="nav-item">📈 Analytics</a>
+    </div>
+
+    <div class="main-content">
+      <div class="page-header">
+        <h1>Settings</h1>
+      </div>
+
+      <div class="settings-card">
+        <h2>🎨 Widget Defaults</h2>
+        <div class="setting-group">
+          <label>Default Bubble Color</label>
+          <input
+            type="color"
+            id="defaultColor"
+            value="#6F4E37"
+            style="width: 80px"
+          />
+          <div
+            class="color-preview"
+            id="colorPreview"
+            style="background: #6f4e37"
+          ></div>
+        </div>
+        <div class="setting-group">
+          <label>Default Welcome Message</label>
+          <input
+            type="text"
+            id="welcomeMessage"
+            value="👋 Hello! How can I help you today?"
+          />
+        </div>
+        <button class="btn" onclick="saveDefaults()">Save Defaults</button>
+      </div>
+
+      <div class="settings-card">
+        <h2>🤖 AI Configuration</h2>
+        <div class="setting-group">
+          <label>AI Model</label>
+          <select id="aiModel">
+            <option value="gemini-3-flash-preview">
+              Gemini 3 Flash (Fast)
+            </option>
+            <option value="gemini-1.5-pro">Gemini 1.5 Pro (Accurate)</option>
+          </select>
+        </div>
+        <div class="setting-group">
+          <label>Response Style</label>
+          <select id="responseStyle">
+            <option value="concise">Concise (1-2 sentences)</option>
+            <option value="detailed">Detailed (3-4 sentences)</option>
+            <option value="friendly">Friendly & Enthusiastic</option>
+          </select>
+        </div>
+        <div class="setting-group">
+          <label>Max Tokens per Response</label>
+          <input type="number" id="maxTokens" value="150" min="50" max="500" />
+        </div>
+        <button class="btn" onclick="saveAISettings()">Save AI Settings</button>
+      </div>
+
+      <div class="settings-card">
+        <h2>🔧 System Settings</h2>
+        <div class="setting-group">
+          <label>Admin Email</label>
+          <input
+            type="email"
+            id="adminEmail"
+            placeholder="admin@brightpeak.com"
+          />
+        </div>
+        <div class="setting-group">
+          <label>API Rate Limit (requests per minute)</label>
+          <input type="number" id="rateLimit" value="60" min="10" max="500" />
+        </div>
+        <div class="setting-group">
+          <label>Enable Debug Logging</label>
+          <select id="debugMode">
+            <option value="false">No</option>
+            <option value="true">Yes</option>
+          </select>
+        </div>
+        <button class="btn" onclick="saveSystemSettings()">
+          Save System Settings
+        </button>
+      </div>
+
+      <div class="settings-card">
+        <h2>🔄 Danger Zone</h2>
+        <div class="setting-group">
+          <label>Export All Data</label>
+          <button
+            class="btn"
+            onclick="exportData()"
+            style="background: #10b981"
+          >
+            📥 Export JSON
+          </button>
+        </div>
+        <div class="setting-group">
+          <label>Clear All Clients</label>
+          <button
+            class="btn"
+            onclick="clearAllClients()"
+            style="background: #dc2626"
+          >
+            ⚠️ Delete All Clients
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function saveDefaults() {
+        const color = document.getElementById("defaultColor").value;
+        const message = document.getElementById("welcomeMessage").value;
+        localStorage.setItem("defaultWidgetColor", color);
+        localStorage.setItem("defaultWelcomeMessage", message);
+        alert("Defaults saved!");
+      }
+
+      function saveAISettings() {
+        const settings = {
+          model: document.getElementById("aiModel").value,
+          style: document.getElementById("responseStyle").value,
+          maxTokens: document.getElementById("maxTokens").value,
+        };
+        localStorage.setItem("aiSettings", JSON.stringify(settings));
+        alert("AI settings saved!");
+      }
+
+      function saveSystemSettings() {
+        const settings = {
+          email: document.getElementById("adminEmail").value,
+          rateLimit: document.getElementById("rateLimit").value,
+          debug: document.getElementById("debugMode").value,
+        };
+        localStorage.setItem("systemSettings", JSON.stringify(settings));
+        alert("System settings saved!");
+      }
+
+      function exportData() {
+        fetch("/api/admin/clients")
+          .then((res) => res.json())
+          .then((data) => {
+            const blob = new Blob([JSON.stringify(data, null, 2)], {
+              type: "application/json",
+            });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = `brightpeak-export-${new Date().toISOString()}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+          });
+      }
+
+      async function clearAllClients() {
+        if (
+          !confirm(
+            "⚠️ WARNING: This will delete ALL clients. This cannot be undone! Continue?",
+          )
+        )
+          return;
+        if (!confirm('Type "DELETE" to confirm')) {
+          const response = prompt('Type "DELETE" to confirm');
+          if (response !== "DELETE") return;
+        }
+
+        const clients = await fetch("/api/admin/clients").then((r) => r.json());
+        for (const client of clients) {
+          await fetch(`/api/admin/clients/${client.id}`, { method: "DELETE" });
+        }
+        alert("All clients deleted!");
+      }
+
+      // Update color preview
+      document
+        .getElementById("defaultColor")
+        .addEventListener("change", function (e) {
+          document.getElementById("colorPreview").style.background =
+            e.target.value;
+        });
+
+      // Load saved settings
+      const savedColor = localStorage.getItem("defaultWidgetColor");
+      const savedMessage = localStorage.getItem("defaultWelcomeMessage");
+      if (savedColor)
+        document.getElementById("defaultColor").value = savedColor;
+      if (savedMessage)
+        document.getElementById("welcomeMessage").value = savedMessage;
+    </script>
+  </body>
+</html>

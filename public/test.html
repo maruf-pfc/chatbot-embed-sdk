@@ -1,104 +1,326 @@
 <!doctype html>
-<html>
+<html lang="en">
   <head>
-    <title>Chat Widget Test</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Coffee Shop | Live Chat Demo</title>
     <style>
       * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
       }
+
       body {
         font-family:
-          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 20px;
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+          Arial, sans-serif;
+        background: #faf9f7;
+        color: #2c2c2c;
       }
-      .card {
-        background: white;
-        border-radius: 20px;
-        padding: 40px;
-        max-width: 600px;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+
+      /* Header */
+      .hero {
+        background: linear-gradient(135deg, #6f4e37 0%, #8b6914 100%);
+        color: white;
+        padding: 80px 20px;
         text-align: center;
       }
-      h1 {
-        color: #333;
-        margin-bottom: 10px;
+      .hero h1 {
+        font-size: 3rem;
+        margin-bottom: 16px;
+        font-weight: 700;
       }
-      p {
-        color: #666;
-        line-height: 1.6;
+      .hero p {
+        font-size: 1.2rem;
+        opacity: 0.95;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      /* Container */
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 60px 20px;
+      }
+
+      /* Business Info Cards */
+      .business-card {
+        background: white;
+        border-radius: 16px;
+        padding: 32px;
+        margin-bottom: 40px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        border-left: 4px solid #6f4e37;
+      }
+      .business-card h2 {
+        color: #6f4e37;
+        margin-bottom: 16px;
+        font-size: 1.8rem;
+      }
+      .business-card .hours {
+        background: #f5f2ef;
+        padding: 16px;
+        border-radius: 12px;
+        margin: 20px 0;
+        font-family: monospace;
+      }
+
+      /* Grid Layout */
+      .info-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 24px;
+        margin: 32px 0;
+      }
+      .info-card {
+        background: #f8f6f4;
+        padding: 20px;
+        border-radius: 12px;
+      }
+      .info-card h3 {
+        color: #6f4e37;
+        margin-bottom: 12px;
+        font-size: 1.2rem;
+      }
+      .info-card ul {
+        list-style: none;
+        padding: 0;
+      }
+      .info-card li {
+        padding: 8px 0;
+        border-bottom: 1px solid #e5e0db;
+        display: flex;
+        justify-content: space-between;
+      }
+      .info-card li:last-child {
+        border-bottom: none;
+      }
+
+      /* Tests Section */
+      .tests {
+        background: #f0ece8;
+        border-radius: 16px;
+        padding: 32px;
+        margin-top: 40px;
+      }
+      .tests h3 {
+        color: #6f4e37;
         margin-bottom: 20px;
+        font-size: 1.4rem;
       }
-      .badge {
-        display: inline-block;
-        background: #10b981;
-        color: white;
-        padding: 5px 12px;
-        border-radius: 20px;
-        font-size: 12px;
-        margin-bottom: 20px;
+      .test-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
       }
-      button {
-        background: #667eea;
-        color: white;
-        border: none;
+      .test-btn {
+        background: white;
+        border: 1px solid #d4c5b5;
         padding: 10px 20px;
-        border-radius: 10px;
+        border-radius: 50px;
         cursor: pointer;
         font-size: 14px;
+        transition: all 0.3s;
+        color: #4a3729;
       }
-      button:hover {
-        background: #5a67d8;
+      .test-btn:hover {
+        background: #6f4e37;
+        color: white;
+        border-color: #6f4e37;
       }
-      .info {
-        background: #f0f0f0;
-        padding: 15px;
-        border-radius: 10px;
-        margin-top: 20px;
-        text-align: left;
-        font-size: 13px;
+
+      /* Footer */
+      .footer {
+        text-align: center;
+        padding: 40px 20px;
+        background: #2c2c2c;
+        color: #999;
+        margin-top: 40px;
       }
-      code {
-        background: #333;
-        color: #0f0;
-        padding: 2px 6px;
-        border-radius: 4px;
-        font-family: monospace;
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .hero h1 {
+          font-size: 2rem;
+        }
+        .container {
+          padding: 30px 20px;
+        }
+        .business-card {
+          padding: 20px;
+        }
+      }
+
+      /* Loading animation */
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.5;
+        }
+      }
+      .chat-status {
+        position: fixed;
+        bottom: 90px;
+        right: 20px;
+        background: white;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        z-index: 9999;
+        display: none;
       }
     </style>
   </head>
   <body>
-    <div class="card">
-      <div class="badge">✅ Live Demo</div>
-      <h1>🤖 Test Your Chat Widget</h1>
-      <p>
-        This is a test page for your chat widget. Click the chat bubble in the
-        bottom right corner to test the AI assistant.
-      </p>
+    <div class="hero">
+      <h1>☕ Bean & Brew Coffeehouse</h1>
+      <p>Artisan coffee • Fresh pastries • Cozy atmosphere</p>
+    </div>
 
-      <div class="info">
-        <strong>📋 Try these questions:</strong><br />
-        • What are your hours?<br />
-        • How much is a latte?<br />
-        • Do you have free WiFi?<br />
-        • Do you offer catering?<br />
-        • What's your return policy?
+    <div class="container">
+      <div class="business-card">
+        <h2>Welcome to Your Neighborhood Coffee Shop</h2>
+        <p>
+          Serving the community since 2015. We're passionate about great coffee
+          and even better conversations.
+        </p>
+
+        <div class="hours">
+          <strong>⏰ Hours of Operation</strong><br />
+          Open daily: 7:00 AM - 7:00 PM
+        </div>
+
+        <div class="info-grid">
+          <div class="info-card">
+            <h3>☕ Coffee Menu</h3>
+            <ul>
+              <li><span>Espresso</span> <strong>$3.00</strong></li>
+              <li><span>Latte</span> <strong>$4.50</strong></li>
+              <li><span>Cappuccino</span> <strong>$4.50</strong></li>
+              <li><span>Cold Brew</span> <strong>$4.00</strong></li>
+              <li><span>Drip Coffee</span> <strong>$2.50</strong></li>
+            </ul>
+          </div>
+
+          <div class="info-card">
+            <h3>🥐 Pastries</h3>
+            <ul>
+              <li><span>Butter Croissant</span> <strong>$3.00</strong></li>
+              <li><span>Chocolate Croissant</span> <strong>$3.50</strong></li>
+              <li><span>Blueberry Muffin</span> <strong>$2.50</strong></li>
+              <li><span>Chocolate Chip Muffin</span> <strong>$2.50</strong></li>
+              <li><span>Banana Bread</span> <strong>$3.50</strong></li>
+            </ul>
+          </div>
+
+          <div class="info-card">
+            <h3>✨ Amenities</h3>
+            <ul>
+              <li><span>Free WiFi</span> <strong>✓</strong></li>
+              <li><span>Outdoor Seating</span> <strong>✓</strong></li>
+              <li><span>Catering</span> <strong>10+ people</strong></li>
+              <li><span>Returns</span> <strong>14 days</strong></li>
+              <li>
+                <span>Loyalty Program</span> <strong>Buy 10 get 1 free</strong>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="tests">
+        <h3>💬 Try asking our AI Assistant</h3>
+        <p style="margin-bottom: 16px; color: #666">
+          Click the chat bubble → then ask any of these questions:
+        </p>
+        <div class="test-buttons">
+          <button class="test-btn" data-question="What are your hours?">
+            ⏰ What are your hours?
+          </button>
+          <button class="test-btn" data-question="How much is a latte?">
+            ☕ How much is a latte?
+          </button>
+          <button class="test-btn" data-question="Do you have free WiFi?">
+            📶 Do you have free WiFi?
+          </button>
+          <button class="test-btn" data-question="Do you offer catering?">
+            🎉 Do you offer catering?
+          </button>
+          <button class="test-btn" data-question="What's your return policy?">
+            🔄 Return policy?
+          </button>
+          <button
+            class="test-btn"
+            data-question="Do you have gluten-free options?"
+          >
+            🌾 Gluten-free options?
+          </button>
+        </div>
+        <p style="margin-top: 20px; font-size: 14px; color: #888">
+          💡 <strong>Pro tip:</strong> The bot ONLY answers based on the
+          business info above. Try asking something off-topic!
+        </p>
       </div>
     </div>
 
-    <!-- Widget embed - Change data-bot-id to your client ID -->
+    <div class="footer">
+      <p>
+        📍 123 Coffee Street, Downtown | 📞 (555) 727-2834 | ✉️
+        hello@beanbrew.com
+      </p>
+      <p style="margin-top: 12px; font-size: 14px">
+        © 2024 Bean & Brew Coffeehouse. All rights reserved.
+      </p>
+    </div>
+
+    <!-- Chat Widget -->
     <script
       src="/widget.js"
       data-bot-id="demo-coffee-shop"
       data-color="#6F4E37"
     ></script>
+
+    <!-- Auto-fill questions when buttons are clicked -->
+    <script>
+      (function () {
+        // Wait for widget to load
+        setTimeout(function () {
+          var buttons = document.querySelectorAll(".test-btn");
+          for (var i = 0; i < buttons.length; i++) {
+            buttons[i].addEventListener("click", function () {
+              var question = this.dataset.question;
+
+              // Find input field in widget
+              var checkInterval = setInterval(function () {
+                var input = document.querySelector("#chat-input");
+                var sendBtn = document.querySelector("#chat-send");
+
+                if (input && sendBtn) {
+                  // Open chat window
+                  var chatButton = document.querySelector(
+                    "#chat-widget-button",
+                  );
+                  if (chatButton) chatButton.click();
+
+                  // Fill and send
+                  setTimeout(function () {
+                    input.value = question;
+                    sendBtn.click();
+                  }, 500);
+
+                  clearInterval(checkInterval);
+                }
+              }, 500);
+            });
+          }
+        }, 1000);
+      })();
+    </script>
   </body>
 </html>
